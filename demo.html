@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Snippets</title>
+<link rel="stylesheet" href="simplesnippets.css">
+<style>
+  :root {
+    --bs-body-bg: #1a1d21;
+    --bs-card-border: #353a42;
+    --bs-text: #e9ecef;
+    --bs-text-muted: #9aa3ad;
+    --bs-primary: #0d6efd;
+    --bs-primary-hover: #0b5ed7;
+    --bs-radius: 6px;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--bs-body-bg);
+    color: var(--bs-text);
+    margin: 0;
+    padding: 32px 24px;
+    line-height: 1.5;
+  }
+
+  .docs { max-width: 800px; margin: 0 auto; }
+
+  header {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--bs-card-border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  header h1 {
+    margin: 0 0 4px;
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+  header p {
+    margin: 0;
+    color: var(--bs-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--bs-primary);
+    border: 1px solid var(--bs-primary);
+    border-radius: var(--bs-radius);
+    text-decoration: none;
+    transition: background 0.12s, border-color 0.12s;
+    white-space: nowrap;
+  }
+  .btn:hover {
+    background: var(--bs-primary-hover);
+    border-color: var(--bs-primary-hover);
+  }
+
+  h2 {
+    margin: 36px 0 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--bs-text);
+  }
+  h2:first-of-type { margin-top: 24px; }
+</style>
+</head>
+<body>
+
+<div class="docs">
+  <header>
+    <div>
+      <h1>Simple Snippets</h1>
+      <p>Simple Snippet Blocks · <15 KB · 2 Files · Built for Your Code · Fully Configurable</p>
+    </div>
+    <a class="btn" href="builder.html">Build your own &rarr;</a>
+  </header>
+
+  <h2>Code</h2>
+  <div class="terminal" data-theme="code" data-title="Python Script">
+    print("Hello World")
+  </div>
+
+  <div class="terminal" data-theme="code" data-title="config.json">
+{
+  "version": "1.0.0",
+  "status": "active"
+}
+  </div>
+
+  <h2>Bash</h2>
+  <div class="terminal"
+       data-theme="bash"
+       data-user="me"
+       data-host="localhost"
+       data-path="/opt/testing">
+    ./run_tests.sh
+  </div>
+
+  <div class="terminal"
+       data-theme="bash"
+       data-user="me"
+       data-host="localhost"
+       data-path="~">
+    ls -la
+  </div>
+
+  <h2>ZSH</h2>
+  <div class="terminal"
+       data-theme="zsh"
+       data-user="User"
+       data-host="device"
+       data-path="~/Desktop">
+    mkdir NewProject
+  </div>
+
+  <h2>CMD</h2>
+  <div class="terminal" data-theme="cmd">ipconfig /all</div>
+
+  <div class="terminal" data-theme="cmd" data-path="C:\temp">
+    netstat -an
+  </div>
+
+  <h2>PowerShell</h2>
+  <div class="terminal" data-theme="ps" data-path="D:\test">
+    ./backup.ps1
+  </div>
+</div>
+
+<script src="simplesnippets.js"></script>
+</body>
+</html>

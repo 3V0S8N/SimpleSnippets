@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Snippets Builder</title>
+<link rel="stylesheet" href="../css/simplesnippets.css">
+<style>
+  :root {
+    --bs-body-bg: #1a1d21;
+    --bs-card-bg: #23272d;
+    --bs-card-border: #353a42;
+    --bs-stage-bg: #3a4049;
+    --bs-stage-border: #4a515b;
+    --bs-input-bg: #16191d;
+    --bs-input-border: #3d434c;
+    --bs-text: #e9ecef;
+    --bs-text-muted: #9aa3ad;
+    --bs-text-dim: #6c757d;
+    --bs-primary: #0d6efd;
+    --bs-primary-hover: #0b5ed7;
+    --bs-primary-ring: rgba(13, 110, 253, 0.25);
+    --bs-radius: 6px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--bs-body-bg);
+    color: var(--bs-text);
+    margin: 0;
+    padding: 32px 20px;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* Header */
+  header {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--bs-card-border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  header h1 {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  header p {
+    margin: 0;
+    color: var(--bs-text-muted);
+    font-size: 0.9rem;
+  }
+  header a.back {
+    color: var(--bs-text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border: 1px solid var(--bs-card-border);
+    border-radius: var(--bs-radius);
+    transition: all 0.12s;
+    white-space: nowrap;
+  }
+  header a.back:hover { color: var(--bs-text); border-color: var(--bs-text-muted); }
+
+  /* Layout */
+  .grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+
+  /* Cards */
+  .card {
+    background: var(--bs-card-bg);
+    border: 1px solid var(--bs-card-border);
+    border-radius: var(--bs-radius);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--bs-card-border);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .card-body { padding: 16px; }
+
+  /* Preview stage — clearly lighter, with subtle dot pattern */
+  .card.preview {
+    background: var(--bs-stage-bg);
+    border-color: var(--bs-stage-border);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    position: relative;
+  }
+  .card.preview::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--bs-primary);
+  }
+  .card.preview .card-header {
+    background: rgba(13, 110, 253, 0.08);
+    border-bottom-color: var(--bs-stage-border);
+  }
+  .card.preview .card-body {
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+  .preview-area { min-height: 100px; }
+  /* Snippet inside preview keeps its own margin off */
+  .preview-area .terminal { margin: 0; }
+
+  /* Form controls */
+  .mb-3 { margin-bottom: 12px; }
+  .mb-3:last-child { margin-bottom: 0; }
+  .mb-3.hidden { display: none; }
+
+  .form-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .form-label .opt {
+    font-weight: 400;
+    color: var(--bs-text-dim);
+    margin-left: 4px;
+  }
+
+  .form-control,
+  .form-select {
+    display: block;
+    width: 100%;
+    padding: 7px 11px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    line-height: 1.5;
+    color: var(--bs-text);
+    background: var(--bs-input-bg);
+    border: 1px solid var(--bs-input-border);
+    border-radius: var(--bs-radius);
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .form-control::placeholder { color: var(--bs-text-dim); }
+  .form-control:focus,
+  .form-select:focus {
+    outline: 0;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem var(--bs-primary-ring);
+  }
+
+  textarea.form-control {
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.83rem;
+    resize: vertical;
+    min-height: 110px;
+  }
+
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%239aa3ad' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 14px;
+    padding-right: 32px;
+  }
+  .form-select option { background: var(--bs-input-bg); color: var(--bs-text); }
+
+  /* Output snippet wrapper */
+  .output-wrap { margin-top: 16px; }
+  .output-wrap .terminal { margin: 0; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div>
+      <h1>Simple Snippets Builder</h1>
+    </div>
+    <a class="back" href="demo.html">&larr; Back to demo</a>
+  </header>
+
+  <div class="grid">
+    <!-- Form -->
+    <div class="card">
+      <div class="card-header">Configuration</div>
+      <div class="card-body">
+
+        <div class="mb-3">
+          <label class="form-label" for="f-theme">Theme</label>
+          <select class="form-select" id="f-theme">
+            <option value="code">Code</option>
+            <option value="cmd">CMD</option>
+            <option value="ps">PowerShell</option>
+            <option value="bash">Bash</option>
+            <option value="zsh">ZSH</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="f-title">Title <span class="opt">(optional)</span></label>
+          <input class="form-control" id="f-title" type="text" placeholder="Hello World">
+        </div>
+
+        <div class="mb-3" data-show="bash zsh">
+          <label class="form-label" for="f-user">User</label>
+          <input class="form-control" id="f-user" type="text" placeholder="user">
+        </div>
+
+        <div class="mb-3" data-show="bash zsh">
+          <label class="form-label" for="f-host">Host</label>
+          <input class="form-control" id="f-host" type="text" placeholder="host">
+        </div>
+
+        <div class="mb-3" data-show="cmd ps bash zsh">
+          <label class="form-label" for="f-path">Path <span class="opt">(optional)</span></label>
+          <input class="form-control" id="f-path" type="text" placeholder="~">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="f-content">Content</label>
+          <textarea class="form-control" id="f-content" spellcheck="false" placeholder="Hello World"></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="card preview">
+      <div class="card-header">Preview</div>
+      <div class="card-body">
+        <div class="preview-area" id="preview"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generated HTML rendered as a code snippet itself -->
+  <div class="output-wrap" id="output-wrap"></div>
+</div>
+
+<script src="../js/simplesnippets.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const els = {
+    theme:    $('f-theme'),
+    title:    $('f-title'),
+    user:     $('f-user'),
+    host:     $('f-host'),
+    path:     $('f-path'),
+    content:  $('f-content'),
+    preview:  $('preview'),
+    output:   $('output-wrap')
+  };
+
+  // fallback
+  function getState() {
+    return {
+      theme:   els.theme.value,
+      title:   els.title.value.trim(),
+      user:    els.user.value.trim(),
+      host:    els.host.value.trim(),
+      path:    els.path.value,
+      content: els.content.value || els.content.placeholder
+    };
+  }
+
+  function applyVisibility(theme) {
+    document.querySelectorAll('[data-show]').forEach(el => {
+      const allowed = el.dataset.show.split(' ');
+      el.classList.toggle('hidden', !allowed.includes(theme));
+    });
+  }
+
+  // Build the data-* attribute list
+  function buildAttrs(state) {
+    const a = [['data-theme', state.theme]];
+    if (state.title) a.push(['data-title', state.title]);
+    if (state.theme === 'bash' || state.theme === 'zsh') {
+      if (state.user) a.push(['data-user', state.user]);
+      if (state.host) a.push(['data-host', state.host]);
+    }
+    if (state.theme !== 'code' && state.path) a.push(['data-path', state.path]);
+    return a;
+  }
+
+  function escAttr(s) {
+    return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  }
+
+  // Generate final HTML
+  function generateHtml(state) {
+    const attrs = buildAttrs(state);
+    const indent = '     ';
+    const attrStr = attrs.map(([k, v]) => `${k}="${escAttr(v)}"`);
+    const head = attrs.length === 1
+      ? ' ' + attrStr[0]
+      : '\n' + indent + attrStr.join('\n' + indent);
+    const body = (state.content || '')
+      .split('\n')
+      .map(l => '    ' + l)
+      .join('\n');
+    return `<div class="terminal"${head}>\n${body}\n</div>`;
+  }
+
+  //fresh terminal element from state
+  function makeSnippet(state) {
+    const div = document.createElement('div');
+    div.className = 'terminal';
+    div.dataset.theme = state.theme;
+    if (state.title) div.dataset.title = state.title;
+    if (state.theme === 'bash' || state.theme === 'zsh') {
+      if (state.user) div.dataset.user = state.user;
+      if (state.host) div.dataset.host = state.host;
+    }
+    if (state.theme !== 'code' && state.path) div.dataset.path = state.path;
+    div.textContent = state.content;
+    return div;
+  }
+
+  function renderPreview(state) {
+    els.preview.innerHTML = '';
+    const div = makeSnippet(state);
+    els.preview.appendChild(div);
+    if (window.TerminalSnippets) window.TerminalSnippets.init(div);
+  }
+
+  // Render the generated HTML
+  function renderOutput(state) {
+    const html = generateHtml(state);
+    els.output.innerHTML = '';
+    const div = document.createElement('div');
+    div.className = 'terminal';
+    div.dataset.theme = 'code';
+    div.dataset.title = 'HTML';
+    div.textContent = html;
+    els.output.appendChild(div);
+    if (window.TerminalSnippets) window.TerminalSnippets.init(div);
+  }
+
+  function update() {
+    const state = getState();
+    applyVisibility(state.theme);
+    renderPreview(state);
+    renderOutput(state);
+  }
+
+  //live updates
+  ['theme', 'title', 'user', 'host', 'path', 'content'].forEach(k => {
+    els[k].addEventListener('input', update);
+  });
+
+  // First render with empty form
+  update();
+})();
+</script>
+</body>
+</html>
