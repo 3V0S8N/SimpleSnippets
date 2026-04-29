@@ -7,7 +7,7 @@ Stop shipping 100MB of dependencies just to draw a fancy box around `ls -la`. **
 [**Live Demo**](https://3v0s8n.github.io/simplesnippets/demo.html) | [**Snippet Builder**](https://3v0s8n.github.io/simplesnippets/builder.html)
 
 * **Zero Dependencies:** No React, no build steps, no `npm install`.
-* **Featherweight:** Just ~12 KB of vanilla JS and CSS.
+* **Featherweight:** Just ~12 KB (unminified) of vanilla JS and CSS.
 * **Smart:** Auto-trims indentation and includes a built-in copy button.
 
 ---
