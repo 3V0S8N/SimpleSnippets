@@ -36,15 +36,14 @@ Just use a `div` with the `terminal` class. The script handles the rest automati
 
 ## Themes & Customization
 
-Pick the look that fits your environment. See all of them in action in the [**Demo**](#link-to-demo).
 
-| Theme | Best for... | Default Title |
-| :--- | :--- | :--- |
-| `code` | General code with syntax highlighting | `Code` |
-| `bash` | Linux/macOS shell style | `bash` |
-| `zsh` | macOS window with traffic light buttons | `zsh` |
-| `cmd` | Classic Windows Command Prompt | `Command Prompt` |
-| `ps` | Modern Windows PowerShell | `PowerShell` |
+| Theme | Best for... |
+| :--- | :--- |
+| `code` | General code with syntax highlighting |
+| `bash` | Linux/macOS shell style |
+| `zsh` | macOS window with traffic light buttons |
+| `cmd` | Classic Windows Command Prompt |
+| `ps` | Modern Windows PowerShell | 
 
 ### Configuration
 You can customize the prompt and behavior using `data-*` attributes:
