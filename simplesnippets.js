@@ -144,6 +144,11 @@
       icon: null,
       defaultTitle: 'zsh',
       prompt: (d) => `<span class="term-prompt-text">${escapeHtml(d.user || 'user')}@${escapeHtml(d.host || 'host')} ${escapeHtml(d.path || '~')} % </span>`
+    },
+    efishell: {
+      icon: null,
+      defaultTitle: 'EFI Shell',
+      prompt: (d) => `<span class="term-prompt-text">${escapeHtml(d.path || 'Shell')}&gt;</span> `
     }
   };
 

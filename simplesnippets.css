@@ -147,6 +147,15 @@
 .terminal--zsh .term-dot--yellow { background: #febc2e; }
 .terminal--zsh .term-dot--green { background: #28c840; }
 
+/* EFI Shell */
+.terminal--efishell { background: #000000; color: #ffffff; font-family: 'Courier New', monospace; }
+.terminal--efishell .term-titlebar {
+  background: #333333;
+  border-bottom: 1px solid #555555;
+}
+.terminal--efishell .term-prompt-text { color: #ffff00; font-weight: bold; }
+.terminal--efishell .term-content { color: #ffffff; }
+
 /* macOS centered title */
 .terminal--zsh .term-title {
   position: absolute;
