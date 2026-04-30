@@ -7,7 +7,7 @@ Stop shipping 100MB of dependencies just to draw a fancy box around `ls -la`. **
 [**Live Demo**](https://3v0s8n.github.io/simplesnippets/demo.html) | [**Snippet Builder**](https://3v0s8n.github.io/simplesnippets/builder.html)
 
 * **Zero Dependencies:** No React, no build steps, no `npm install`.
-* **Featherweight:** Just ~12 KB (unminified) of vanilla JS and CSS.
+* **Featherweight:** Just ~14 KB (unminified) of vanilla JS and CSS.
 * **Smart:** Auto-trims indentation and includes a built-in copy button.
 
 ---
@@ -43,7 +43,8 @@ Just use a `div` with the `terminal` class. The script handles the rest automati
 | `bash` | Linux/macOS shell style |
 | `zsh` | macOS window with traffic light buttons |
 | `cmd` | Classic Windows Command Prompt |
-| `ps` | Modern Windows PowerShell | 
+| `ps` | Modern Windows PowerShell |
+| `efishell` | EFI Shell environment | 
 
 ### Configuration
 You can customize the prompt and behavior using `data-*` attributes:
