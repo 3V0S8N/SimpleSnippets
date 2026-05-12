@@ -253,116 +253,67 @@
 <script src="simplesnippets.min.js"></script>
 <script>
 (function () {
-  const $ = id => document.getElementById(id);
-  const els = {
-    theme:    $('f-theme'),
-    title:    $('f-title'),
-    user:     $('f-user'),
-    host:     $('f-host'),
-    path:     $('f-path'),
-    content:  $('f-content'),
-    preview:  $('preview'),
-    output:   $('output-wrap')
-  };
+  const FIELDS = ['theme', 'title', 'user', 'host', 'path', 'content'];
+  const els = Object.fromEntries(FIELDS.map(k => [k, document.getElementById('f-' + k)]));
+  els.preview = document.getElementById('preview');
+  els.output = document.getElementById('output-wrap');
 
-  // fallback
-  function getState() {
-    return {
-      theme:   els.theme.value,
-      title:   els.title.value.trim(),
-      user:    els.user.value.trim(),
-      host:    els.host.value.trim(),
-      path:    els.path.value,
-      content: els.content.value || els.content.placeholder
-    };
-  }
+  const getState = () => ({
+    theme: els.theme.value,
+    title: els.title.value.trim(),
+    user: els.user.value.trim(),
+    host: els.host.value.trim(),
+    path: els.path.value,
+    content: els.content.value || els.content.placeholder
+  });
 
-  function applyVisibility(theme) {
-    document.querySelectorAll('[data-show]').forEach(el => {
-      const allowed = el.dataset.show.split(' ');
-      el.classList.toggle('hidden', !allowed.includes(theme));
-    });
-  }
+  const applyVisibility = theme => document.querySelectorAll('[data-show]').forEach(el => {
+    el.classList.toggle('hidden', !el.dataset.show.split(' ').includes(theme));
+  });
 
-  // Build the data-* attribute list
-  function buildAttrs(state) {
-    const a = [['data-theme', state.theme]];
-    if (state.title) a.push(['data-title', state.title]);
-    if (state.theme === 'bash' || state.theme === 'zsh') {
-      if (state.user) a.push(['data-user', state.user]);
-      if (state.host) a.push(['data-host', state.host]);
+  function buildAttrs(s) {
+    const a = [['data-theme', s.theme]];
+    if (s.title) a.push(['data-title', s.title]);
+    if (s.theme === 'bash' || s.theme === 'zsh') {
+      if (s.user) a.push(['data-user', s.user]);
+      if (s.host) a.push(['data-host', s.host]);
     }
-    if (state.theme !== 'code' && state.path) a.push(['data-path', state.path]);
+    if (s.theme !== 'code' && s.path) a.push(['data-path', s.path]);
     return a;
   }
 
-  function escAttr(s) {
-    return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
-  }
-
-  // Generate final HTML
-  function generateHtml(state) {
-    const attrs = buildAttrs(state);
-    const indent = '     ';
-    const attrStr = attrs.map(([k, v]) => `${k}="${escAttr(v)}"`);
-    const head = attrs.length === 1
-      ? ' ' + attrStr[0]
-      : '\n' + indent + attrStr.join('\n' + indent);
-    const body = (state.content || '')
-      .split('\n')
-      .map(l => '    ' + l)
-      .join('\n');
-    return `<div class="terminal"${head}>\n${body}\n</div>`;
-  }
-
-  //fresh terminal element from state
-  function makeSnippet(state) {
+  function makeTerminal(attrs, content) {
     const div = document.createElement('div');
     div.className = 'terminal';
-    div.dataset.theme = state.theme;
-    if (state.title) div.dataset.title = state.title;
-    if (state.theme === 'bash' || state.theme === 'zsh') {
-      if (state.user) div.dataset.user = state.user;
-      if (state.host) div.dataset.host = state.host;
-    }
-    if (state.theme !== 'code' && state.path) div.dataset.path = state.path;
-    div.textContent = state.content;
+    attrs.forEach(([k, v]) => div.setAttribute(k, v));
+    div.textContent = content;
     return div;
   }
 
-  function renderPreview(state) {
-    els.preview.innerHTML = '';
-    const div = makeSnippet(state);
-    els.preview.appendChild(div);
-    if (window.TerminalSnippets) window.TerminalSnippets.init(div);
+  function generateHtml(attrs, content) {
+    const esc = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    const indent = '     ';
+    const parts = attrs.map(([k, v]) => `${k}="${esc(v)}"`);
+    const head = parts.length === 1 ? ' ' + parts[0] : '\n' + indent + parts.join('\n' + indent);
+    const body = (content || '').split('\n').map(l => '    ' + l).join('\n');
+    return `<div class="terminal"${head}>\n${body}\n</div>`;
   }
 
-  // Render the generated HTML
-  function renderOutput(state) {
-    const html = generateHtml(state);
-    els.output.innerHTML = '';
-    const div = document.createElement('div');
-    div.className = 'terminal';
-    div.dataset.theme = 'code';
-    div.dataset.title = 'HTML';
-    div.textContent = html;
-    els.output.appendChild(div);
-    if (window.TerminalSnippets) window.TerminalSnippets.init(div);
+  function render(target, el) {
+    target.innerHTML = '';
+    target.appendChild(el);
+    if (window.TerminalSnippets) window.TerminalSnippets.init(el);
   }
 
   function update() {
     const state = getState();
     applyVisibility(state.theme);
-    renderPreview(state);
-    renderOutput(state);
+    const attrs = buildAttrs(state);
+    render(els.preview, makeTerminal(attrs, state.content));
+    render(els.output, makeTerminal([['data-theme', 'code'], ['data-title', 'HTML']], generateHtml(attrs, state.content)));
   }
 
-  //live updates
-  ['theme', 'title', 'user', 'host', 'path', 'content'].forEach(k => {
-    els[k].addEventListener('input', update);
-  });
-
-  // First render with empty form
+  FIELDS.forEach(k => els[k].addEventListener('input', update));
   update();
 })();
 </script>

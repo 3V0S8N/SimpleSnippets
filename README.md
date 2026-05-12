@@ -1,79 +1,88 @@
 # Simple Snippets
 
-**No-nonsense code blocks for your terminal-style snippets.**
+Nice-looking terminal code blocks for your docs, blog, or next project — without dragging in 100 MB of dependencies.
 
-Stop shipping 100MB of dependencies just to draw a fancy box around `ls -la`. **Simple Snippets** gives you beautiful, terminal-inspired code blocks for your docs, blog, or project pages with zero overhead.
+[**Live Demo**](https://3v0s8n.github.io/simplesnippets/demo.html) · [**Snippet Builder**](https://3v0s8n.github.io/simplesnippets/builder.html)
 
-[**Live Demo**](https://3v0s8n.github.io/simplesnippets/demo.html) | [**Snippet Builder**](https://3v0s8n.github.io/simplesnippets/builder.html)
-
-* **Zero Dependencies:** No React, no build steps, no `npm install`.
-* **Featherweight:** Just ~14 KB (unminified) of vanilla JS and CSS.
-* **Smart:** Auto-trims indentation and includes a built-in copy button.
+- **No dependencies.** No React, no build step, no `npm install`.
+- **Tiny.** ~8 KB minified (CSS + JS combined).
+- **Convenient.** Auto-trims indentation, copy button built in.
 
 ---
 
-## Why this exists
+## Why?
 
-I wanted a simple way to display terminal commands and code snippets without the bloat. Most existing libraries are massive or require complex frameworks. This project is just two files. Add a `<div>`, get a nicely styled terminal. That’s it.
+I just wanted to show terminal and code snippets without pulling in a 500 KB highlighter framework. Most libraries are either huge or expect you to restructure half your project. This one is two files. Drop in a `<div>`, get a terminal. That's it.
 
 ## Quick Start
 
-### 1. Grab the files
-Download `simplesnippets.css` and `simplesnippets.js` and add them to your project. 
+**1. Grab the files**
+Download `simplesnippets.min.css` and `simplesnippets.min.js` and drop them into your project.
 
-### 2. Link them in your HTML
-    <link rel="stylesheet" href="simplesnippets.css">
-    <script src="simplesnippets.js" defer></script>
+**2. Link them**
 
-### 3. Add your snippet
-Just use a `div` with the `terminal` class. The script handles the rest automatically once the page loads.
+```html
+<link rel="stylesheet" href="simplesnippets.min.css">
+<script src="simplesnippets.min.js" defer></script>
+```
 
-    <div class="terminal" data-theme="bash" data-user="me" data-host="localhost" data-path="~">
-      ls -la
-    </div>
+**3. Write a snippet**
+A `div` with the `terminal` class — the rest happens automatically once the page loads.
+
+```html
+<div class="terminal" data-theme="bash" data-user="me" data-host="localhost" data-path="~">
+  ls -la
+</div>
+```
 
 ---
 
-## Themes & Customization
+## Themes
 
-
-| Theme | Best for... |
-| :--- | :--- |
-| `code` | General code with syntax highlighting |
-| `bash` | Linux/macOS shell style |
-| `zsh` | macOS window with traffic light buttons |
-| `cmd` | Classic Windows Command Prompt |
-| `ps` | Modern Windows PowerShell |
-| `efishell` | EFI Shell environment | 
+| Theme      | Good for …                                       |
+| :--------- | :----------------------------------------------- |
+| `code`     | General code with syntax highlighting            |
+| `bash`     | Linux/macOS shell                                |
+| `zsh`      | macOS window with the three traffic-light dots   |
+| `cmd`      | Classic Windows Command Prompt                   |
+| `ps`       | Windows PowerShell                               |
+| `efishell` | EFI Shell                                        |
 
 ### Configuration
-You can customize the prompt and behavior using `data-*` attributes:
 
-* `data-theme`: The visual style (required).
-* `data-title`: Change the text in the title bar.
-* `data-user` / `data-host`: Set the username and hostname (Bash/ZSH).
-* `data-path`: Set the working directory path.
+Everything works through `data-*` attributes:
+
+| Attribute    | What it does                                          |
+| :----------- | :---------------------------------------------------- |
+| `data-theme` | Which theme to use (required).                        |
+| `data-title` | Text in the title bar.                                |
+| `data-user`  | Username (Bash/ZSH).                                  |
+| `data-host`  | Hostname (Bash/ZSH).                                  |
+| `data-path`  | Working directory shown in the prompt.                |
 
 ---
 
-## Pro Tips
+## Tips
 
 ### Visual Builder
-The repo includes `builder.html`. Open it in your browser to pick a theme, fill in your details, and copy the generated HTML instantly. 
+The repo includes `builder.html`. Open it in your browser, click your snippet together, and copy the generated HTML. Saves you from typing attributes by hand.
 
-### Dynamic Content (SPAs)
-If you're using a framework or loading content dynamically, use the global API to refresh your snippets:
+### Dynamic content (SPAs)
+If you're loading snippets after the initial render — React, Vue, fetch, whatever — there's a small API:
 
-    // Initialize a specific element
-    TerminalSnippets.init(element);
+```js
+// Initialize a specific element
+TerminalSnippets.init(element);
 
-    // Re-scan the whole page for new snippets
-    TerminalSnippets.refresh();
+// Re-scan the whole page
+TerminalSnippets.refresh();
+```
 
-### Minimal Syntax Highlighting
-The `code` theme includes a tiny, built-in tokenizer. It handles strings, numbers, comments, and common keywords. It’s perfect for quick examples without needing a heavy library like Prism.js.
+### Built-in syntax highlighting
+The `code` theme ships with a tiny tokenizer — strings, numbers, comments, a handful of common keywords. Good enough for most examples without having to pull in Prism.js or Highlight.js.
 
 ---
 
 ## License
-**MIT.** Use it however you like. Attribution is appreciated, but honestly, I dont give a fuck.
+
+**MIT.** Use it however you want. A shout-out is appreciated, but honestly, I don't give a fuck.
