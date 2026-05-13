@@ -1,23 +1,39 @@
+<div align="center">
+
 # Simple Snippets
 
-Nice-looking terminal code blocks for your docs, blog, or next project — without dragging in 100 MB of dependencies.
+**Tiny terminal-style code blocks.** No React, no build step, no `npm install` — two files and a `<div>`.
 
-[**Live Demo**](https://3v0s8n.github.io/simplesnippets/demo.html) · [**Snippet Builder**](https://3v0s8n.github.io/simplesnippets/builder.html)
+[**Live Demo**](https://3v0s8n.github.io/simplesnippets/demo.html) · [**Snippet Builder**](https://3v0s8n.github.io/simplesnippets/builder.html) · [License](#license)
 
-- **No dependencies.** No React, no build step, no `npm install`.
-- **Tiny.** ~8 KB minified (CSS + JS combined).
-- **Convenient.** Auto-trims indentation, copy button built in.
+![Size](https://img.shields.io/badge/min%20size-%3C9%20KB-blue?style=flat-square)
+![Deps](https://img.shields.io/badge/dependencies-none-brightgreen?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-lightgrey?style=flat-square)
+
+</div>
 
 ---
 
-## Why?
+## ✨ Why?
 
-I just wanted to show terminal and code snippets without pulling in a 500 KB highlighter framework. Most libraries are either huge or expect you to restructure half your project. This one is two files. Drop in a `<div>`, get a terminal. That's it.
+Most syntax-highlighting libraries are either 500 KB or expect you to restructure half your project. Simple Snippets is two files. Drop in a `<div>`, get a terminal block. That's the whole product.
 
-## Quick Start
+- 🪶 **Tiny** — ~9 KB minified (CSS + JS combined)
+- 🚫 **Zero dependencies** — no framework, no bundler
+- ⚙️ **Convenient** — auto-dedents content, copy button included
+- 🎨 **6 themes** — Code, Bash, ZSH, CMD, PowerShell, EFI Shell
+- ☀️ **Light mode** — the `code` theme auto-adapts to your page's light/dark setting
+
+---
+
+## 🚀 Quick Start
 
 **1. Grab the files**
-Download `simplesnippets.min.css` and `simplesnippets.min.js` and drop them into your project.
+
+```
+simplesnippets.min.css
+simplesnippets.min.js
+```
 
 **2. Link them**
 
@@ -27,7 +43,8 @@ Download `simplesnippets.min.css` and `simplesnippets.min.js` and drop them into
 ```
 
 **3. Write a snippet**
-A `div` with the `terminal` class — the rest happens automatically once the page loads.
+
+A `<div class="terminal">` is all you need — the rest is configured via `data-*` attributes.
 
 ```html
 <div class="terminal" data-theme="bash" data-user="me" data-host="localhost" data-path="~">
@@ -37,52 +54,63 @@ A `div` with the `terminal` class — the rest happens automatically once the pa
 
 ---
 
-## Themes
+## 🎨 Themes
 
-| Theme      | Good for …                                       |
-| :--------- | :----------------------------------------------- |
-| `code`     | General code with syntax highlighting            |
-| `bash`     | Linux/macOS shell                                |
-| `zsh`      | macOS window with the three traffic-light dots   |
-| `cmd`      | Classic Windows Command Prompt                   |
-| `ps`       | Windows PowerShell                               |
-| `efishell` | EFI Shell                                        |
+| Theme      | Use case                                           |
+| :--------- | :------------------------------------------------- |
+| `code`     | General source code with syntax highlighting       |
+| `bash`     | Linux/macOS shell sessions                         |
+| `zsh`      | macOS window with the three traffic-light dots     |
+| `cmd`      | Classic Windows Command Prompt                     |
+| `ps`       | Windows PowerShell                                 |
+| `efishell` | EFI / UEFI shell                                   |
+
+### ☀️ Light variant (`code` only)
+
+The `code` theme has both a dark and a light palette (Atom One Light). It picks automatically:
+
+- **Auto:** if your page declares `<html data-bs-theme="light">` (Bootstrap 5 convention)
+- **Manual:** add `class="terminal--light"` to force light regardless of page theme
+
+```html
+<!-- Always light -->
+<div class="terminal terminal--light" data-theme="code" data-title="config.json">
+  { "version": "1.0.0" }
+</div>
+```
 
 ### Configuration
 
 Everything works through `data-*` attributes:
 
-| Attribute    | What it does                                          |
-| :----------- | :---------------------------------------------------- |
-| `data-theme` | Which theme to use (required).                        |
-| `data-title` | Text in the title bar.                                |
-| `data-user`  | Username (Bash/ZSH).                                  |
-| `data-host`  | Hostname (Bash/ZSH).                                  |
-| `data-path`  | Working directory shown in the prompt.                |
+| Attribute    | What it does                              |
+| :----------- | :---------------------------------------- |
+| `data-theme` | Which theme to use (required)             |
+| `data-title` | Text in the title bar                     |
+| `data-user`  | Username (Bash / ZSH)                     |
+| `data-host`  | Hostname (Bash / ZSH)                     |
+| `data-path`  | Working directory shown in the prompt     |
 
 ---
 
-## Tips
+## 🛠️ Tips
 
 ### Visual Builder
-The repo includes `builder.html`. Open it in your browser, click your snippet together, and copy the generated HTML. Saves you from typing attributes by hand.
+The repo ships with `builder.html`. Open it, click your snippet together, copy the generated HTML — no attribute typing required.
 
-### Dynamic content (SPAs)
-If you're loading snippets after the initial render — React, Vue, fetch, whatever — there's a small API:
+### Dynamic content (SPAs, fetch, etc.)
+Snippets are auto-initialised on `DOMContentLoaded`. For content loaded later, there's a small API:
 
 ```js
-// Initialize a specific element
-TerminalSnippets.init(element);
-
-// Re-scan the whole page
-TerminalSnippets.refresh();
+TerminalSnippets.init(element);  // initialise one element
+TerminalSnippets.refresh();      // re-scan the whole page
 ```
 
 ### Built-in syntax highlighting
-The `code` theme ships with a tiny tokenizer — strings, numbers, comments, a handful of common keywords. Good enough for most examples without having to pull in Prism.js or Highlight.js.
+The `code` theme ships with a small tokenizer — strings, numbers, comments, common keywords (`import`, `const`, `function`, `return`, …). Enough for most examples without pulling in Prism.js or Highlight.js. Theme colours follow the Atom One palette and are exposed as CSS custom properties (`--hl-keyword`, `--hl-string`, …) — override them to taste.
 
 ---
 
-## License
+## 📄 License
 
-**MIT.** Use it however you want. A shout-out is appreciated, but honestly, I don't give a fuck.
+**MIT.** Use it however you want. A shout-out is appreciated but absolutely not required.

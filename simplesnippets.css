@@ -86,9 +86,39 @@
 .terminal--code .hl-builtin  { color: var(--hl-builtin); }
 .terminal--code .hl-tag      { color: var(--hl-tag); }
 
-/* Code */
-.terminal--code { background: #282c34; color: #abb2bf; }
-.terminal--code .term-titlebar { background: #21252b; border-bottom: 1px solid #181a1f; }
+/* Code - colors expose as vars so the light variant just swaps them. */
+.terminal--code {
+  background: var(--code-bg, #282c34);
+  color: var(--code-fg, #abb2bf);
+}
+.terminal--code .term-titlebar {
+  background: var(--code-tb-bg, #21252b);
+  border-bottom: 1px solid var(--code-tb-border, #181a1f);
+}
+
+/* Light variant: auto-activates under [data-bs-theme="light"] or via
+   class="terminal--light". Palette mirrors Atom One Light. */
+:where([data-bs-theme="light"]) .terminal--code,
+.terminal--code.terminal--light {
+  --code-bg: #e1e1e3;
+  --code-fg: #383a42;
+  --code-tb-bg: #d4d4d6;
+  --code-tb-border: #bfbfc1;
+  --hl-keyword: #a626a4;
+  --hl-string: #50a14f;
+  --hl-number: #986801;
+  --hl-comment: #a0a1a7;
+  --hl-function: #4078f2;
+  --hl-builtin: #c18401;
+  --hl-tag: #e45649;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+:where([data-bs-theme="light"]) .terminal--code .term-copy,
+.terminal--code.terminal--light .term-copy { color: #5c6370; }
+:where([data-bs-theme="light"]) .terminal--code .term-copy:hover,
+.terminal--code.terminal--light .term-copy:hover { background: rgba(0, 0, 0, 0.06); }
+:where([data-bs-theme="light"]) .terminal--code .term-content ::selection,
+.terminal--code.terminal--light .term-content ::selection { background: rgba(0, 0, 0, 0.12); color: inherit; }
 
 /* PowerShell */
 .terminal--ps { background: #012456; color: #eeedf0; }
